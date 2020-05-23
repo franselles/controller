@@ -28,6 +28,7 @@
         <p>USUARIO: {{ cartLocal.phone }}</p>
       </div>
       <div class="message-body">
+        <h5 class="title is-5">NÚMERO: {{ detail.numberItem }}</h5>
         <h5 class="title is-5">
           COLUMNA: {{ detail.col }} FILA: {{ detail.row }}
         </h5>
