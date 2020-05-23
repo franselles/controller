@@ -5,6 +5,11 @@
         <b-input type="password" v-model="dni" password-reveal required>
         </b-input>
       </b-field>
+      <article class="message is-danger" v-if="error">
+        <div class="message-body">
+          EMPLEADO NO ENCONTRADO.
+        </div>
+      </article>
       <div class="buttons">
         <b-button
           type="is-success is-fullwidth"
@@ -16,7 +21,7 @@
       <div class="control">
         <b-taglist attached>
           <b-tag type="is-dark">version</b-tag>
-          <b-tag type="is-info">0.2.0</b-tag>
+          <b-tag type="is-info">0.2.1</b-tag>
         </b-taglist>
       </div>
     </form>
@@ -36,6 +41,7 @@ export default {
     return {
       dni: '',
       offline: true,
+      error: false,
     };
   },
 
@@ -55,10 +61,9 @@ export default {
         dni: this.dni.toUpperCase(),
       }).then(response => {
         if (response) {
-          console.log('hola');
           this.$router.push({ name: 'select' });
         } else {
-          console.log('NO EXISTE');
+          this.error = true;
         }
       });
     },

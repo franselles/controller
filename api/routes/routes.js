@@ -24,7 +24,7 @@ api.get('/cities', citiesControl.getCities);
 api.get('/beaches', beachesControl.getBeaches);
 
 // Carts
-api.post('/cart', cartsControl.postCart2);
+api.post('/cart', cartsControl.postCart);
 api.get('/carts', cartsControl.getCarts);
 api.get('/tickets', cartsControl.getTicketNumber);
 api.get('/detailday', cartsControl.getCartsDetail);
