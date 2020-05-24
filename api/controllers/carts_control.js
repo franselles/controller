@@ -3,6 +3,26 @@ const mongoose = require('mongoose');
 
 const Carts = require('../models/carts_model');
 
+function postUsed(req, res) {
+  const id = req.body.id;
+
+  Carts.findByIdAndUpdate(id, {
+    used: true,
+    dateTimeUsed: new Date(),
+  }).exec((err, doc) => {
+    if (err)
+      return res.status(500).send({
+        message: `Error al realizar la petición: ${err}`,
+      });
+    if (!doc)
+      return res.status(404).send({
+        message: 'No existe',
+      });
+
+    res.status(200).send(doc);
+  });
+}
+
 function postCart(req, res) {
   const cart = req.body;
 
@@ -258,4 +278,5 @@ module.exports = {
   getStock,
   getItemUserDetail,
   getItemUser,
+  postUsed,
 };

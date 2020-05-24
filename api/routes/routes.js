@@ -30,6 +30,7 @@ api.get('/tickets', cartsControl.getTicketNumber);
 api.get('/detailday', cartsControl.getCartsDetail);
 api.get('/checkin', cartsControl.getItemUser);
 api.get('/checkin/detail', cartsControl.getItemUserDetail);
+api.post('/used', cartsControl.postUsed);
 
 // Users
 api.get('/user/email', usersControl.checkEmail);

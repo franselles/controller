@@ -67,7 +67,7 @@ export default {
       try {
         const data = await Vue.axios({
           method: 'get',
-          url: '/carts',
+          url: 'carts',
           params: {
             userID: payload.userID,
           },
@@ -90,7 +90,7 @@ export default {
       try {
         const data = await Vue.axios({
           method: 'get',
-          url: '/detailday',
+          url: 'detailday',
           params: {
             userID: payload.userID,
             date: payload.date,
@@ -108,7 +108,21 @@ export default {
       try {
         const data = await Vue.axios({
           method: 'post',
-          url: '/cart',
+          url: 'cart',
+          data: payload,
+        });
+
+        return data.data;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+    async postUsed(context, payload) {
+      try {
+        const data = await Vue.axios({
+          method: 'post',
+          url: 'used',
           data: payload,
         });
 
@@ -122,7 +136,7 @@ export default {
       try {
         const data = await Vue.axios({
           method: 'post',
-          url: '/checkcart',
+          url: 'checkcart',
           data: payload,
         });
 

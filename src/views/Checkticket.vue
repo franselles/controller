@@ -20,14 +20,20 @@
       </div>
     </article>
 
-    <p>{{ result }}</p>
     <qrcode-stream @decode="onDecode" @init="onInit" />
 
-    <article class="message is-info" v-if="result">
+    <article :class="stateTicket(detail)" v-if="result">
       <div class="message-header">
         <p>USUARIO: {{ cartLocal.phone }}</p>
       </div>
       <div class="message-body">
+        <h5 class="title is-5" v-if="detail.used">
+          ESTADO DEL TICKET:
+          <span class="tag is-danger is-medium has-text-weight-bold"
+            >USADO</span
+          >
+        </h5>
+
         <h5 class="title is-5">NÚMERO: {{ detail.numberItem }}</h5>
         <h5 class="title is-5">
           COLUMNA: {{ detail.col }} FILA: {{ detail.row }}
@@ -39,6 +45,9 @@
         <p>ID: {{ detail.itemID }}</p>
         <p>TIPO: {{ detail.type }}</p>
         <p>PRECIO: {{ detail.price }} €</p>
+        <b-button type="is-danger" @click="setUsed(detail._id)" expanded
+          >MARCADO CHECK</b-button
+        >
       </div>
     </article>
   </div>
@@ -69,7 +78,25 @@ export default {
   },
 
   methods: {
-    ...mapActions('userStore', ['getItemUserDetail', 'getItemUser']),
+    ...mapActions('userStore', [
+      'getItemUserDetail',
+      'getItemUser',
+      'postUsed',
+    ]),
+
+    setUsed(item) {
+      this.postUsed({
+        id: item,
+      });
+    },
+
+    stateTicket(item) {
+      if (item.used == true) {
+        return 'message is-danger';
+      }
+
+      return 'message is-warning';
+    },
 
     onDecode(result) {
       this.getItemUser({
