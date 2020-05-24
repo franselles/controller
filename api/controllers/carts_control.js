@@ -1,15 +1,22 @@
 'use strict';
 const mongoose = require('mongoose');
+const dayjs = require('dayjs');
 
 const Carts = require('../models/carts_model');
 
 function postUsed(req, res) {
   const id = req.body.id;
 
-  Carts.findByIdAndUpdate(id, {
-    used: true,
-    dateTimeUsed: new Date(),
-  }).exec((err, doc) => {
+  Carts.findOneAndUpdate(
+    { 'detail._id': id },
+    {
+      $set: {
+        'detail.$.used': true,
+        'detail.$.dateTimeUsed': dayjs(new Date()).format('YYYY-MM-DD HH:MM'),
+      },
+    },
+    { new: true }
+  ).exec((err, doc) => {
     if (err)
       return res.status(500).send({
         message: `Error al realizar la petición: ${err}`,

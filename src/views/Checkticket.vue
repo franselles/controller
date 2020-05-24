@@ -20,7 +20,7 @@
       </div>
     </article>
 
-    <qrcode-stream @decode="onDecode" @init="onInit" />
+    <!-- <qrcode-stream @decode="onDecode" @init="onInit" /> -->
 
     <article :class="stateTicket(detail)" v-if="result">
       <div class="message-header">
@@ -45,7 +45,11 @@
         <p>ID: {{ detail.itemID }}</p>
         <p>TIPO: {{ detail.type }}</p>
         <p>PRECIO: {{ detail.price }} €</p>
-        <b-button type="is-danger" @click="setUsed(detail._id)" expanded
+        <b-button
+          type="is-danger"
+          @click="setUsed(detail)"
+          expanded
+          v-if="!detail.used"
           >MARCADO CHECK</b-button
         >
       </div>
@@ -54,13 +58,13 @@
 </template>
 
 <script>
-import { QrcodeStream } from 'vue-qrcode-reader';
+// import { QrcodeStream } from 'vue-qrcode-reader';
 import { mapState, mapActions } from 'vuex';
 import dayjs from 'dayjs';
 
 export default {
   name: 'checkticket',
-  components: { QrcodeStream },
+  // components: { QrcodeStream },
   data() {
     return {
       result: '',
@@ -86,7 +90,9 @@ export default {
 
     setUsed(item) {
       this.postUsed({
-        id: item,
+        id: item._id,
+      }).then(() => {
+        item.used = true;
       });
     },
 
