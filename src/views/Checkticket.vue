@@ -20,7 +20,7 @@
       </div>
     </article>
 
-    <!-- <qrcode-stream @decode="onDecode" @init="onInit" /> -->
+    <qrcode-stream @decode="onDecode" @init="onInit" />
 
     <article :class="stateTicket(detail)" v-if="result">
       <div class="message-header">
@@ -58,13 +58,13 @@
 </template>
 
 <script>
-// import { QrcodeStream } from 'vue-qrcode-reader';
+import { QrcodeStream } from 'vue-qrcode-reader';
 import { mapState, mapActions } from 'vuex';
 import dayjs from 'dayjs';
 
 export default {
   name: 'checkticket',
-  // components: { QrcodeStream },
+  components: { QrcodeStream },
   data() {
     return {
       result: '',
