@@ -5,10 +5,10 @@ const Carts = require('../models/carts_model');
 
 async function getItems(querystring) {
   return await Items.find({
-    cityID: querystring.cityID,
-    beachID: querystring.beachID,
-    sectorID: querystring.sectorID,
-    typeID: querystring.typeID,
+    cityID: Number(querystring.cityID),
+    beachID: Number(querystring.beachID),
+    sectorID: Number(querystring.sectorID),
+    // typeID: querystring.typeID,
   })
     .sort({ col: 1, row: 1 })
     .exec();
@@ -27,7 +27,7 @@ async function getCarts(querystring) {
         'detail.cityID': Number(querystring.cityID),
         'detail.beachID': Number(querystring.beachID),
         'detail.sectorID': Number(querystring.sectorID),
-        'detail.typeID': Number(querystring.typeID),
+        // 'detail.typeID': Number(querystring.typeID),
         'detail.date': querystring.date,
       },
     },
@@ -60,7 +60,7 @@ async function getFilled(req, res) {
     cityID: req.query.cityID,
     beachID: req.query.beachID,
     sectorID: req.query.sectorID,
-    typeID: req.query.typeID,
+    // typeID: req.query.typeID,
     date: req.query.date,
   };
 
