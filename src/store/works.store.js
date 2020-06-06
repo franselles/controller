@@ -13,6 +13,7 @@ export default {
     sectorActual: null,
     sectorIDActual: 1,
     typeIDActual: 9,
+    group: null,
   },
   mutations: {
     setStateSector(state, payload) {
@@ -71,6 +72,12 @@ export default {
     },
     resetTypeIDActual(state) {
       state.typeIDActual = null;
+    },
+    setGroup(state, payload) {
+      state.group = payload;
+    },
+    resetGroup(state) {
+      state.group = null;
     },
   },
   actions: {

@@ -7,7 +7,7 @@
             ><b-icon icon="arrow-left-thick"></b-icon> VOLVER</a
           >
         </li>
-        <li>{{ user.name }}</li>
+        <li>{{ employee.name }}</li>
       </ul>
     </nav>
     <b-field>
@@ -102,7 +102,7 @@ export default {
   },
 
   computed: {
-    ...mapState('userStore', ['user']),
+    ...mapState('userStore', ['employee']),
   },
 };
 </script>

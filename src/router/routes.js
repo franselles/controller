@@ -28,6 +28,12 @@ export default [
     meta: { requiresAuth: true },
   },
   {
+    path: '/groupsector',
+    name: 'groupsector',
+    component: () => import('@/views/Groupsector.vue'),
+    meta: { requiresAuth: true },
+  },
+  {
     path: '/cart',
     name: 'cart',
     component: () => import('@/views/Cart.vue'),

@@ -183,16 +183,7 @@ export default {
       this.setBeachActual(this.beachLocal);
       this.setSectorActual(this.sectorLocal);
 
-      this.$router.push({ name: 'sector' });
-    },
-
-    sectorSelectedEdit() {
-      this.setDateActual(dayjs(this.dateLocal).format('YYYY-MM-DD'));
-      this.setCityActual(this.cityLocal);
-      this.setBeachActual(this.beachLocal);
-      this.setSectorActual(this.sectorLocal);
-
-      this.$router.push({ name: 'sector' });
+      this.$router.push({ name: 'groupsector' });
     },
 
     back() {
