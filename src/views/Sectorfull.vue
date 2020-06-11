@@ -39,71 +39,59 @@
     </article>
 
     <b-field>
-      <a href="#" @click="back" class="button">
-        <b-icon icon="arrow-left-thick"></b-icon>
-        <span>VOLVER SELECCIONAR ZONA</span></a
-      >
-    </b-field>
-
-    <b-field>
       <b-icon icon="arrow-bottom-left-thick"></b-icon>PRIMERA LINEA DE PLAYA
     </b-field>
 
-    <div>
-      <div class="columns is-mobile">
-        <div class="column is-narrow" style="width: 30px;" id="beach"></div>
-
-        <div class="column">
-          <b-field>
-            <table>
-              <tr v-for="line in statusSector" :key="line.index">
-                <td v-for="cell in line" :key="cell.index">
-                  <div class="cell">
-                    <b-button
-                      v-if="cell.filled == 1"
-                      size="is-small"
-                      type="is-danger"
-                      disabled
-                      >X</b-button
-                    >
-                    <b-button
-                      v-else-if="cell.filled == 2"
-                      size="is-small"
-                      type="is-primary"
-                      @click="pushed(cell)"
-                      >R</b-button
-                    >
-                    <b-button
-                      v-show="!cell.empty == 1"
-                      v-else-if="cell.empty == 1"
-                      size="is-small"
-                      disabled
-                    >
-                    </b-button>
-                    <b-button
-                      v-else-if="cell.empty == 0 && cell.typeID == 9"
-                      size="is-small"
-                      type="is-success"
-                      @click="pushed(cell)"
-                      >{{ cell.col }} - {{ cell.row }}</b-button
-                    >
-                    <b-button
-                      v-else
-                      size="is-small"
-                      type="is-warning"
-                      @click="pushed(cell)"
-                      >{{ cell.col }} - {{ cell.row }}</b-button
-                    >
-                  </div>
-                </td>
-              </tr>
-            </table>
-          </b-field>
-        </div>
+    <div class="columns is-mobile">
+      <div class="column is-narrow" style="width: 30px;" id="beach"></div>
+      <div class="column">
+        <b-field>
+          <table>
+            <tr v-for="line in statusSector" :key="line.index">
+              <td v-for="cell in line" :key="cell.index">
+                <div class="cell">
+                  <b-button
+                    v-if="cell.filled == 1"
+                    size="is-small"
+                    type="is-danger"
+                    disabled
+                    >X</b-button
+                  >
+                  <b-button
+                    v-else-if="cell.filled == 2"
+                    size="is-small"
+                    type="is-primary"
+                    @click="pushed(cell)"
+                    >R</b-button
+                  >
+                  <b-button
+                    v-show="!cell.empty == 1"
+                    v-else-if="cell.empty == 1"
+                    size="is-small"
+                    disabled
+                  >
+                  </b-button>
+                  <b-button
+                    v-else-if="cell.empty == 0 && cell.typeID == 9"
+                    size="is-small"
+                    type="is-success"
+                    @click="pushed(cell)"
+                    >{{ cell.numberItem }}</b-button
+                  >
+                  <b-button
+                    v-else
+                    size="is-small"
+                    type="is-warning"
+                    @click="pushed(cell)"
+                    >{{ cell.numberItem }}</b-button
+                  >
+                </div>
+              </td>
+            </tr>
+          </table>
+        </b-field>
       </div>
     </div>
-
-    <br />
 
     <article class="message is-info" v-if="statusCart.qty > 0">
       <div class="message-body">
@@ -125,7 +113,7 @@
               <th class="is-size-7">#</th>
               <th class="is-size-7">FECHA</th>
               <th class="is-size-7">SECT</th>
-              <th class="is-size-7">C/F</th>
+              <th class="is-size-7">NÚMERO</th>
               <th class="is-size-7">PRECIO</th>
             </tr>
           </thead>
@@ -134,7 +122,7 @@
               <td class="is-size-7">{{ index + 1 }}</td>
               <td class="is-size-7">{{ formatDate(item.date) }}</td>
               <td class="is-size-7">{{ item.sectorID }}</td>
-              <td class="is-size-7">{{ item.col }}-{{ item.row }}</td>
+              <td class="is-size-7">{{ item.numberItem }}</td>
               <td class="is-size-7">{{ item.price }} €</td>
             </tr>
           </tbody>
@@ -165,7 +153,6 @@ export default {
   data() {
     return {
       statusSector: [],
-      tempoSector: [],
       date: null,
       enableButtonCart: true,
       cartLocal: {
@@ -201,8 +188,8 @@ export default {
       'setSectorActual',
       'setCart',
     ]),
-    ...mapMutations('userStore', ['setCart', 'checkCart']),
     ...mapActions('userStore', ['checkCart']),
+    ...mapMutations('userStore', ['setCart']),
 
     getSectorLocal() {
       this.statusSector = [];
@@ -228,28 +215,12 @@ export default {
         for (let c = 0; c < this.stateSector.length; c++) {
           line.push(this.stateSector[c]);
           if ((c + 1) % rows == 0) {
-            this.tempoSector.push(line);
+            this.statusSector.push(line);
             line = [];
           }
         }
-
-        this.renderGroup();
-        // this.updateState();
+        this.updateState();
       });
-    },
-
-    renderGroup() {
-      const cn = this.group.col;
-      const rn = this.group.row;
-
-      for (let c = cn * 10; c < cn * 10 + this.group.numberCols; c++) {
-        let line = [];
-        for (let r = rn * 5; r < rn * 5 + this.group.numberRows; r++) {
-          line.push(this.tempoSector[c][r]);
-        }
-        this.statusSector.push(line);
-      }
-      this.updateState();
     },
 
     updateState() {
@@ -264,7 +235,7 @@ export default {
             this.cartLocal.detail[i].beachID == this.beachActual.beachID &&
             this.cartLocal.detail[i].sectorID == this.sectorActual.sectorID
           ) {
-            this.tempoSector[col - 1][row - 1].filled = 2;
+            this.statusSector[col - 1][row - 1].filled = 2;
           }
         }
       }
@@ -306,7 +277,7 @@ export default {
 
     pushed(e) {
       if (e.filled == 2) {
-        this.tempoSector[e.col - 1][e.row - 1].filled = 0;
+        this.statusSector[e.col - 1][e.row - 1].filled = 0;
 
         for (let i = this.cartLocal.detail.length - 1; i >= 0; i--) {
           if (
@@ -317,14 +288,12 @@ export default {
           }
         }
       } else {
-        this.tempoSector[e.col - 1][e.row - 1].filled = 2;
+        this.statusSector[e.col - 1][e.row - 1].filled = 2;
 
         if (this.cartLocal.date == null) {
           this.cartLocal.date = dayjs(new Date()).format('YYYY-MM-DD');
-          // this.cartLocal.userID = 'CO-' + this.employee.dni;
-          // this.cartLocal.phone = 'CO-' + this.employee.phone;
-          this.cartLocal.userID = 'VENTA EN TAQUILA';
-          this.cartLocal.phone = 'VENTA EN TAQUILA';
+          this.cartLocal.userID = 'CO-' + this.employee.dni;
+          this.cartLocal.phone = 'CO-' + this.employee.phone;
 
           this.cartLocal.ticketID = null;
 
@@ -373,7 +342,6 @@ export default {
 
       this.setEnableButtonCart();
       this.calcStatusCart();
-      this.setCart(this.cartLocal);
     },
 
     addDay(n) {
@@ -443,7 +411,6 @@ export default {
       'typeIDActual',
       'sectorActual',
       'stateSector',
-      'group',
     ]),
 
     dateFormated: function () {

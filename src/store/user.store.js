@@ -201,14 +201,14 @@ export default {
       }
     },
 
-    async getTicketNumber(context, payload) {
+    async getTicketNumber() {
       try {
         const data = await Vue.axios({
           method: 'get',
           url: 'tickets',
-          params: {
-            date: payload.date,
-          },
+          // params: {
+          //   date: payload.date,
+          // },
         });
 
         return data.data[0].tickets + 1 || 1;

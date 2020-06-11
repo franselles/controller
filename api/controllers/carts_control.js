@@ -252,14 +252,14 @@ function getItemUserDetail(req, res) {
 }
 
 function getTicketNumber(req, res) {
-  const date = req.query.date;
+  // const date = req.query.date;
 
   Carts.aggregate([
-    {
-      $match: {
-        date: date,
-      },
-    },
+    // {
+    //   $match: {
+    //     date: date,
+    //   },
+    // },
     {
       $count: 'tickets',
     },
