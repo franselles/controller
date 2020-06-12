@@ -423,7 +423,7 @@ export default {
       }
 
       this.setCart(this.cartLocal);
-      this.$router.replace({ name: 'cart' });
+      this.$router.push({ name: 'cart' });
     },
 
     back() {

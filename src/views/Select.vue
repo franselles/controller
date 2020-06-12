@@ -19,17 +19,17 @@
       </div>
     </article>
 
-    <article class="message is-warning">
+    <article class="message is-success">
       <div class="message-body">
-        <b-button type="is-warning" @click="checkIn" expanded
-          >RESERVAR</b-button
+        <b-button type="is-success" @click="checkIn" expanded
+          >ALQUILAR HAMACA</b-button
         >
       </div>
     </article>
     <article class="message is-warning">
       <div class="message-body">
         <b-button type="is-warning" @click="booked" expanded
-          >HISTORIAL</b-button
+          >TICKETS VENDIDOS</b-button
         >
       </div>
     </article>

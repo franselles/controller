@@ -10,15 +10,27 @@
         <li>{{ employee.name }}</li>
       </ul>
     </nav>
-    <b-field label="TELEFONO CLIENTE">
+    <b-field label="TELEFONO MOVIL CLIENTE">
       <b-input
         type="number"
+        min="0"
+        placeholder="123456789"
+        oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+        maxlength="9"
         v-model="userID"
         required
-        minlength="9"
+      ></b-input>
+    </b-field>
+    <b-field label="REPETIR TELEFONO">
+      <b-input
+        type="number"
+        min="0"
+        placeholder="123456789"
+        oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
         maxlength="9"
-      >
-      </b-input>
+        v-model="userID2"
+        required
+      ></b-input>
     </b-field>
     <b-field>
       <div>
@@ -87,6 +99,9 @@
         IMPORTE TOTAL:<span class="has-text-weight-bold"> {{ total }} €</span>
       </div>
     </b-field>
+    <b-field class="is-size-7">
+      TODOS LOS PRECIOS CON EL I.V.A. INCLUIDO
+    </b-field>
 
     <div class="buttons">
       <b-button
@@ -147,6 +162,7 @@ export default {
       total: 0,
       detailDuplicated: [],
       userID: '',
+      userID2: '',
     };
   },
 
@@ -160,7 +176,7 @@ export default {
     ...mapMutations('userStore', ['setCart', 'resetCart']),
 
     cancel() {
-      this.$router.replace({ name: 'sector' });
+      this.$router.go(-1);
     },
 
     purchase() {
@@ -231,7 +247,15 @@ export default {
     ...mapState('userStore', ['cart', 'employee']),
 
     purchased: function () {
-      return this.cartLocal.detail.length > 0 && this.userID.length == 9;
+      return (
+        this.cartLocal.detail.length > 0 &&
+        this.userID.length == 9 &&
+        this.samePhone
+      );
+    },
+
+    samePhone: function () {
+      return this.userID == this.userID2;
     },
   },
 };
