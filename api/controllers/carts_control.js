@@ -46,6 +46,7 @@ function postCart(req, res) {
       data.phone = req.body.phone;
       data.ticketID = req.body.ticketID;
       data.canceled = req.body.canceled;
+      data.payed = req.body.payed;
       data.detail = req.body.detail;
 
       data.save(err => {
