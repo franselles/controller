@@ -6,10 +6,12 @@ const api = require('./api/routes/routes');
 // const cookieParser = require('cookie-parser');
 
 const app = express();
+const helmet = require('helmet');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+app.use(helmet());
 // app.use(cookieParser());
 
 // Create link to Angular build directory

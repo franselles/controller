@@ -17,6 +17,7 @@
     "dayjs": "^1.8.28",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "helmet": "^3.23.1",
     "mongoose": "^5.9.18",
     "register-service-worker": "^1.7.1",
     "vue": "^2.6.11",

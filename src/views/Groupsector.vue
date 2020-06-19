@@ -140,6 +140,7 @@ export default {
 
     getSectorLocal() {
       this.statusSector = [];
+      this.groupLocal = [];
 
       this.getSector({
         cityID: this.cityActual.cityID,
