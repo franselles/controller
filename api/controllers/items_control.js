@@ -29,12 +29,14 @@ function getItemsCitySector(req, res) {
 function getItem(req, res) {
   const cityID = req.query.cityID;
   const sectorID = req.query.sectorID;
+  const beachID = req.query.beachID;
   const typeID = req.query.typeID;
   const col = req.query.col;
   const row = req.query.row;
   Items.find({
     cityID: cityID,
     sectorID: sectorID,
+    beachID: beachID,
     typeID: typeID,
     col: col,
     row: row,

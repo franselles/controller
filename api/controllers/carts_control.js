@@ -70,6 +70,11 @@ function getStock(cart) {
     return new Promise(function (resolve) {
       cart.detail.forEach((element, index) => {
         Carts.aggregate([
+          {
+            $match: {
+              payed: true,
+            },
+          },
           { $unwind: '$detail' },
           {
             $match: {
@@ -143,6 +148,11 @@ function getCartsDetail(req, res) {
   const date = req.query.date;
 
   Carts.aggregate([
+    {
+      $match: {
+        payed: true,
+      },
+    },
     { $unwind: '$detail' },
     {
       $match: {
@@ -210,6 +220,11 @@ function getItemUserDetail(req, res) {
   const ObjectId = mongoose.Types.ObjectId;
 
   Carts.aggregate([
+    {
+      $match: {
+        payed: true,
+      },
+    },
     { $unwind: '$detail' },
     {
       $match: {

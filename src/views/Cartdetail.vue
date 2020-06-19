@@ -7,7 +7,12 @@
             ><b-icon icon="arrow-left-thick"></b-icon> VOLVER</a
           >
         </li>
-        <li>{{ user.name }}</li>
+        <li>{{ employee.name }}</li>
+        <li>
+          <a href="#" @click="logout"
+            ><b-icon icon="home-circle"></b-icon> SALIR DE LA APP</a
+          >
+        </li>
       </ul>
     </nav>
 
@@ -131,6 +136,10 @@ export default {
 
     back() {
       this.$router.go(-1);
+    },
+
+    logout() {
+      this.$router.replace({ name: 'login' });
     },
 
     formatDate(date) {
