@@ -133,7 +133,11 @@ export default {
     this.getSectorLocal();
   },
   methods: {
-    ...mapActions('worksStore', ['getStateSector', 'getSector']),
+    ...mapActions('worksStore', [
+      'getStateSector',
+      'getSector',
+      'getStateSectorItems',
+    ]),
     ...mapMutations('worksStore', [
       'setDateActual',
       'setSectorActual',
@@ -143,36 +147,51 @@ export default {
     ...mapMutations('userStore', ['setCart', 'checkCart']),
     ...mapActions('userStore', ['checkCart']),
 
+    // getSectorLocal() {
+    //   this.statusSector = [];
+    //   this.groupLocal = [];
+
+    //   this.getSector({
+    //     cityID: this.cityActual.cityID,
+    //     beachID: this.beachActual.beachID,
+    //     sectorID: this.sectorActual.sectorID,
+    //   }).then(() => {
+    //     this.getStateSectorItemsLocal(this.sectorActual.rows);
+    //   });
+    // },
+
+    // getStateSectorItemsLocal(rows) {
+    //   this.getStateSector({
+    //     cityID: this.cityActual.cityID,
+    //     beachID: this.beachActual.beachID,
+    //     sectorID: this.sectorActual.sectorID,
+    //     date: this.date,
+    //     // typeID: this.typeIDActual,
+    //   }).then(() => {
+    //     let line = [];
+    //     for (let c = 0; c < this.stateSector.length; c++) {
+    //       line.push(this.stateSector[c]);
+
+    //       if ((c + 1) % rows == 0) {
+    //         this.statusSector.push(line);
+    //         line = [];
+    //       }
+    //     }
+    //     this.getStateGroupItemsLocal();
+    //   });
+    // },
+
     getSectorLocal() {
       this.statusSector = [];
-      this.groupLocal = [];
+      this.tempoSector = [];
 
-      this.getSector({
-        cityID: this.cityActual.cityID,
-        beachID: this.beachActual.beachID,
-        sectorID: this.sectorActual.sectorID,
-      }).then(() => {
-        this.getStateSectorItemsLocal(this.sectorActual.rows);
-      });
-    },
-
-    getStateSectorItemsLocal(rows) {
-      this.getStateSector({
+      this.getStateSectorItems({
         cityID: this.cityActual.cityID,
         beachID: this.beachActual.beachID,
         sectorID: this.sectorActual.sectorID,
         date: this.date,
-        // typeID: this.typeIDActual,
-      }).then(() => {
-        let line = [];
-        for (let c = 0; c < this.stateSector.length; c++) {
-          line.push(this.stateSector[c]);
-
-          if ((c + 1) % rows == 0) {
-            this.statusSector.push(line);
-            line = [];
-          }
-        }
+      }).then(result => {
+        this.statusSector = result;
         this.getStateGroupItemsLocal();
       });
     },

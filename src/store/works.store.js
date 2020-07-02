@@ -129,22 +129,6 @@ export default {
       }
     },
 
-    async getCities({ commit }) {
-      try {
-        const data = await Vue.axios({
-          method: 'get',
-          url: 'cities',
-        });
-
-        if (data.data) {
-          await commit('getCities', data.data);
-          return data.data;
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    },
-
     async getItems(context, payload) {
       try {
         const data = await Vue.axios({
@@ -164,39 +148,17 @@ export default {
       }
     },
 
-    async getSectors({ commit }, payload) {
+    async getCities({ commit }) {
       try {
         const data = await Vue.axios({
           method: 'get',
-          url: 'sectors',
-          params: {
-            cityID: payload.cityID,
-            beachID: payload.beachID,
-          },
+          url: 'cities',
         });
-        if (data.data) {
-          commit('setSectors', data.data);
-          return data.data;
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    },
 
-    async getBeaches({ commit }, payload) {
-      try {
-        const data = await Vue.axios({
-          method: 'get',
-          url: 'beaches',
-          params: {
-            cityID: payload,
-          },
-        });
         if (data.data) {
-          commit('setBeaches', data.data);
+          await commit('getCities', data.data);
           return data.data;
         }
-        console.log(data);
       } catch (error) {
         console.log(error);
       }
@@ -223,6 +185,25 @@ export default {
       }
     },
 
+    async getSectors({ commit }, payload) {
+      try {
+        const data = await Vue.axios({
+          method: 'get',
+          url: 'sectors',
+          params: {
+            cityID: payload.cityID,
+            beachID: payload.beachID,
+          },
+        });
+        if (data.data) {
+          commit('setSectors', data.data);
+          return data.data;
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
     async getStateSector({ commit }, payload) {
       try {
         const data = await Vue.axios({
@@ -238,6 +219,47 @@ export default {
         });
         if (data.data) {
           await commit('setStateSector', data.data);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+    async getBeaches({ commit }, payload) {
+      try {
+        const data = await Vue.axios({
+          method: 'get',
+          url: 'beaches',
+          params: {
+            cityID: payload,
+          },
+        });
+        if (data.data) {
+          commit('setBeaches', data.data);
+          return data.data;
+        }
+        console.log(data);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+    async getStateSectorItems(context, payload) {
+      try {
+        const data = await Vue.axios({
+          method: 'get',
+          url: 'statesectoritems',
+          params: {
+            cityID: payload.cityID,
+            beachID: payload.beachID,
+            sectorID: payload.sectorID,
+            typeID: payload.typeID,
+            date: payload.date,
+          },
+        });
+        if (data.data) {
+          // await commit('setStateSector', data.data);
+          return data.data;
         }
       } catch (error) {
         console.log(error);

@@ -57,6 +57,7 @@ api.get('/item', itemsControl.getItem);
 api.put('/item', itemsControl.putItem);
 api.put('/items', itemsControl.putItems);
 api.post('/items', itemsControl.postItems);
+api.get('/statesectoritems', itemsControl.getStateSectorItems);
 
 //  Users check, token and cookie
 // api.post('/login', usersControl.postUsersToken);

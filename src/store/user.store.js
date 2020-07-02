@@ -104,6 +104,20 @@ export default {
       }
     },
 
+    async checkCart(context, payload) {
+      try {
+        const data = await Vue.axios({
+          method: 'post',
+          url: 'checkcart',
+          data: payload,
+        });
+
+        return data.data;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
     async postCart(context, payload) {
       try {
         const data = await Vue.axios({
@@ -123,20 +137,6 @@ export default {
         const data = await Vue.axios({
           method: 'post',
           url: 'used',
-          data: payload,
-        });
-
-        return data.data;
-      } catch (error) {
-        console.log(error);
-      }
-    },
-
-    async checkCart(context, payload) {
-      try {
-        const data = await Vue.axios({
-          method: 'post',
-          url: 'checkcart',
           data: payload,
         });
 
@@ -201,22 +201,6 @@ export default {
       }
     },
 
-    async getTicketNumber() {
-      try {
-        const data = await Vue.axios({
-          method: 'get',
-          url: 'tickets',
-          // params: {
-          //   date: payload.date,
-          // },
-        });
-
-        return data.data[0].tickets + 1 || 1;
-      } catch (error) {
-        return 1;
-      }
-    },
-
     async getItemUser(context, payload) {
       try {
         const data = await Vue.axios({
@@ -244,6 +228,22 @@ export default {
         });
 
         return data.data[0];
+      } catch (error) {
+        return 1;
+      }
+    },
+
+    async getTicketNumber() {
+      try {
+        const data = await Vue.axios({
+          method: 'get',
+          url: 'tickets',
+          // params: {
+          //   date: payload.date,
+          // },
+        });
+
+        return data.data[0].tickets + 1 || 1;
       } catch (error) {
         return 1;
       }
