@@ -80,8 +80,10 @@
             <th class="is-size-7">#</th>
             <th class="is-size-7">FECHA</th>
             <th class="is-size-7">SECT</th>
-            <th class="is-size-7">C/F</th>
+            <th class="is-size-7">CDAD</th>
             <th class="is-size-7">PRECIO</th>
+            <th class="is-size-7">TOTAL</th>
+
             <th class="is-size-7"></th>
           </tr>
         </thead>
@@ -90,8 +92,9 @@
             <td class="is-size-7">{{ index + 1 }}</td>
             <td class="is-size-7">{{ formatDate(item.date) }}</td>
             <td class="is-size-7">{{ item.sectorID }}</td>
-            <td class="is-size-7">{{ item.col }}-{{ item.row }}</td>
+            <td class="is-size-7">{{ item.quantity }}</td>
             <td class="is-size-7">{{ item.price }} €</td>
+            <td class="is-size-7">{{ calcTotalDetail(item) }} €</td>
             <td class="is-size-7" @click="removeItem(index)">
               <b-button type="is-danger" icon-right="delete" size="is-small" />
             </td>
@@ -130,7 +133,7 @@
               <th class="is-size-7">#</th>
               <th class="is-size-7">FECHA</th>
               <th class="is-size-7">SECT</th>
-              <th class="is-size-7">C/F</th>
+              <th class="is-size-7">CDAD</th>
               <th class="is-size-7">PRECIO</th>
             </tr>
           </thead>
@@ -139,7 +142,7 @@
               <td class="is-size-7">{{ index + 1 }}</td>
               <td class="is-size-7">{{ formatDate(item.date) }}</td>
               <td class="is-size-7">{{ item.sectorID }}</td>
-              <td class="is-size-7">{{ item.col }}-{{ item.row }}</td>
+              <td class="is-size-7">{{ item.quantity }}</td>
               <td class="is-size-7">{{ item.price }} €</td>
             </tr>
           </tbody>
@@ -201,25 +204,6 @@ export default {
               this.resetCart();
               this.$router.replace({ name: 'citybeaches' });
             }, 2000);
-          } else {
-            this.detailDuplicated = result;
-            result.forEach(element => {
-              const index = this.cartLocal.detail.findIndex(
-                (p => p.citiID === element.cityID) &&
-                  (p => p.beachID === element.beachID) &&
-                  (p => p.sectorID === element.sectorID) &&
-                  (p => p.typeID === element.typeID) &&
-                  (p => p.col === element.col) &&
-                  (p => p.row === element.row)
-              );
-
-              this.cartLocal.detail.splice(index, 1);
-            });
-
-            if (this.detailDuplicated.length > 0) {
-              this.setCart(this.cartLocal);
-              this.calcTotal();
-            }
           }
         });
       });
@@ -240,8 +224,12 @@ export default {
     calcTotal() {
       this.total = 0;
       this.cartLocal.detail.forEach(element => {
-        this.total += element.price;
+        this.total += element.price * element.quantity;
       });
+    },
+
+    calcTotalDetail(item) {
+      return item.quantity * item.price;
     },
 
     back() {

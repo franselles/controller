@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const dayjs = require('dayjs');
 
 const Carts = require('../models/carts_model');
+const { getCheckFilled } = require('./filled_control');
 
 function postUsed(req, res) {
   const id = req.body.id;
@@ -30,33 +31,61 @@ function postUsed(req, res) {
   });
 }
 
-function postCart(req, res) {
+async function checkAvaiability(req, res) {
+  let data = req.body;
+  let toRemove = [];
+
+  try {
+    return new Promise(function (resolve) {
+      for (let index = 0; index < data.detail.length; index++) {
+        const element = data.detail[index];
+        getCheckFilled({
+          cityID: element.cityID,
+          beachID: element.beachID,
+          sectorID: element.sectorID,
+          typeID: element.typeID,
+          date: element.date,
+        }).then(result => {
+          if (result.available == 0) {
+            toRemove.push(result);
+          }
+
+          if (index == data.detail.length - 1) {
+            resolve(toRemove);
+          }
+        });
+      }
+    });
+  } catch (error) {
+    return res.status(404).send(error);
+  }
+}
+
+async function postCart(req, res) {
   const cart = req.body;
 
   try {
-    getStock(cart).then(result => {
-      if (result.length > 0) {
-        return res.status(200).send(result);
-      }
+    let check = await checkAvaiability(cart);
 
-      const data = new Carts();
+    console.log(check);
 
-      data.date = req.body.date;
-      data.userID = req.body.userID;
-      data.phone = req.body.phone;
-      data.ticketID = req.body.ticketID;
-      data.canceled = req.body.canceled;
-      data.payed = req.body.payed;
-      data.detail = req.body.detail;
+    const data = new Carts();
 
-      data.save(err => {
-        if (err)
-          res.status(500).send({
-            message: `Error al salvar en la base de datos: ${err} `,
-          });
+    data.date = req.body.date;
+    data.userID = req.body.userID;
+    data.phone = req.body.phone;
+    data.ticketID = req.body.ticketID;
+    data.canceled = req.body.canceled;
+    data.payed = true;
+    data.detail = req.body.detail;
 
-        res.status(200).send(true);
-      });
+    data.save(err => {
+      if (err)
+        res.status(500).send({
+          message: `Error al salvar en la base de datos: ${err} `,
+        });
+
+      res.status(200).send(true);
     });
   } catch (error) {
     return res.status(404).send(error);
@@ -302,4 +331,5 @@ module.exports = {
   getItemUserDetail,
   getItemUser,
   postUsed,
+  checkAvaiability,
 };

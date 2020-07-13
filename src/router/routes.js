@@ -34,6 +34,12 @@ export default [
     meta: { requiresAuth: true },
   },
   {
+    path: '/available',
+    name: 'available',
+    component: () => import('@/views/Available.vue'),
+    meta: { requiresAuth: true },
+  },
+  {
     path: '/groupsector',
     name: 'groupsector',
     component: () => import('@/views/Groupsector.vue'),

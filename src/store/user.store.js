@@ -2,14 +2,58 @@ import Vue from 'vue';
 
 export default {
   namespaced: true,
+  strict: true,
   state: {
     logged: false,
     cart: null,
     carts: [],
     user: null,
     employee: null,
+    cartDetail: [],
   },
   mutations: {
+    /**
+     * Mutation datos del carrito (reserva)
+     * @param {Object} payload Objeto con datos ticket(userID, date) y detail (sectorID, col, row, ...)
+     */
+    setCartDetail(state, payload) {
+      // function newLine() {
+      //   return {
+      //     typeID: '',
+      //     type: '',
+      //     price: 0,
+      //     quantity: 0,
+      //   };
+      // }
+
+      payload.forEach(item => {
+        // let n = new newLine();
+
+        let n = {
+          typeID: item.typeID,
+          type: item.type,
+          price: item.price,
+          available: item.available,
+          quantity: 0,
+        };
+        state.cartDetail.push(n);
+      });
+    },
+    resetCartDetail(state) {
+      state.cartDetail = [];
+    },
+    updateAddCartDetail(state, payload) {
+      if (
+        state.cartDetail[payload].available <=
+        state.cartDetail[payload].quantity
+      )
+        return;
+      state.cartDetail[payload].quantity += 1;
+    },
+    updateRemoveCartDetail(state, payload) {
+      if (state.cartDetail[payload].quantity == 0) return;
+      state.cartDetail[payload].quantity += -1;
+    },
     /** Mutation si estamos logeados */
     setLogged(state) {
       state.logged = true;
@@ -127,6 +171,26 @@ export default {
         });
 
         return data.data;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+    async getCategories(context, payload) {
+      try {
+        const data = await Vue.axios({
+          method: 'get',
+          url: 'categories',
+          params: {
+            cityID: payload.cityID,
+            beachID: payload.beachID,
+            sectorID: payload.sectorID,
+            date: payload.date,
+          },
+        });
+        if (data.data) {
+          return data.data;
+        }
       } catch (error) {
         console.log(error);
       }

@@ -2,6 +2,7 @@ import Vue from 'vue';
 
 export default {
   namespaced: true,
+  strict: true,
   state: {
     stateSector: [],
     sectors: [],

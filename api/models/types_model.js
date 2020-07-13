@@ -7,6 +7,7 @@ const typesSchema = Schema(
   {
     typeID: { type: Number },
     type: { type: String, uppercase: true },
+    price: { type: Number },
   },
   { collection: 'types' }
 );
