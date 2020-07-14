@@ -181,7 +181,11 @@ export default {
   },
 
   methods: {
-    ...mapActions('userStore', ['postCart', 'getTicketNumber']),
+    ...mapActions('userStore', [
+      'postCart',
+      'getTicketNumber',
+      'checkAvaiability',
+    ]),
     ...mapMutations('userStore', ['setCart', 'resetCart']),
 
     cancel() {
@@ -198,13 +202,17 @@ export default {
         // ).replace(/-/g, '');
         this.cartLocal.ticketID = ('00000000' + result).slice(-8);
 
-        this.postCart(this.cartLocal).then(result => {
-          if (result === true) {
-            setTimeout(() => {
-              this.resetCart();
-              this.$router.replace({ name: 'citybeaches' });
-            }, 2000);
-          }
+        this.checkAvaiability(this.cartLocal).then(result => {
+          console.log(result);
+
+          this.postCart(this.cartLocal).then(result => {
+            if (result === true) {
+              setTimeout(() => {
+                this.resetCart();
+                this.$router.replace({ name: 'citybeaches' });
+              }, 2000);
+            }
+          });
         });
       });
     },

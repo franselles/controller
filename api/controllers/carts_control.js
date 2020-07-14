@@ -36,39 +36,27 @@ async function checkAvaiability(req, res) {
   let toRemove = [];
 
   try {
-    return new Promise(function (resolve) {
-      for (let index = 0; index < data.detail.length; index++) {
-        const element = data.detail[index];
-        getCheckFilled({
-          cityID: element.cityID,
-          beachID: element.beachID,
-          sectorID: element.sectorID,
-          typeID: element.typeID,
-          date: element.date,
-        }).then(result => {
-          if (result.available == 0) {
-            toRemove.push(result);
-          }
-
-          if (index == data.detail.length - 1) {
-            resolve(toRemove);
-          }
-        });
+    for (const item of data.detail) {
+      let result = await getCheckFilled({
+        cityID: item.cityID,
+        beachID: item.beachID,
+        sectorID: item.sectorID,
+        typeID: item.typeID,
+        date: item.date,
+      });
+      if (result.available < item.quantity) {
+        let excess = item.quantity - result.available;
+        toRemove.push({ ...result, excess: excess });
       }
-    });
+    }
+    res.status(200).send(toRemove);
   } catch (error) {
     return res.status(404).send(error);
   }
 }
 
 async function postCart(req, res) {
-  const cart = req.body;
-
   try {
-    let check = await checkAvaiability(cart);
-
-    console.log(check);
-
     const data = new Carts();
 
     data.date = req.body.date;

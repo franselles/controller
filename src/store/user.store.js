@@ -196,6 +196,22 @@ export default {
       }
     },
 
+    async checkAvaiability(context, payload) {
+      console.log(payload);
+      try {
+        const data = await Vue.axios({
+          method: 'post',
+          url: 'check',
+          data: payload,
+        });
+        if (data.data) {
+          return data.data;
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
     async postUsed(context, payload) {
       try {
         const data = await Vue.axios({
