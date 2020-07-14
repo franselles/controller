@@ -80,6 +80,8 @@
             <th class="is-size-7">#</th>
             <th class="is-size-7">FECHA</th>
             <th class="is-size-7">SECT</th>
+            <th class="is-size-7">ID</th>
+            <th class="is-size-7">ITEM</th>
             <th class="is-size-7">CDAD</th>
             <th class="is-size-7">PRECIO</th>
             <th class="is-size-7">TOTAL</th>
@@ -92,6 +94,8 @@
             <td class="is-size-7">{{ index + 1 }}</td>
             <td class="is-size-7">{{ formatDate(item.date) }}</td>
             <td class="is-size-7">{{ item.sectorID }}</td>
+            <td class="is-size-7">{{ item.typeID }}</td>
+            <td class="is-size-7">{{ item.type }}</td>
             <td class="is-size-7">{{ item.quantity }}</td>
             <td class="is-size-7">{{ item.price }} €</td>
             <td class="is-size-7">{{ calcTotalDetail(item) }} €</td>
@@ -133,8 +137,9 @@
               <th class="is-size-7">#</th>
               <th class="is-size-7">FECHA</th>
               <th class="is-size-7">SECT</th>
+              <th class="is-size-7">ID</th>
+              <th class="is-size-7">ITEM</th>
               <th class="is-size-7">CDAD</th>
-              <th class="is-size-7">PRECIO</th>
             </tr>
           </thead>
           <tbody>
@@ -142,8 +147,9 @@
               <td class="is-size-7">{{ index + 1 }}</td>
               <td class="is-size-7">{{ formatDate(item.date) }}</td>
               <td class="is-size-7">{{ item.sectorID }}</td>
+              <td class="is-size-7">{{ item.typeID }}</td>
+              <td class="is-size-7">{{ item.type }}</td>
               <td class="is-size-7">{{ item.quantity }}</td>
-              <td class="is-size-7">{{ item.price }} €</td>
             </tr>
           </tbody>
         </table>
@@ -203,16 +209,40 @@ export default {
         this.cartLocal.ticketID = ('00000000' + result).slice(-8);
 
         this.checkAvaiability(this.cartLocal).then(result => {
-          console.log(result);
+          if (result.length > 0) {
+            for (const r of result) {
+              this.detailDuplicated.push({
+                date: r.date,
+                sectorID: r.sectorID,
+                typeID: r.typeID,
+                quantity: r.excess,
+              });
 
-          this.postCart(this.cartLocal).then(result => {
-            if (result === true) {
-              setTimeout(() => {
-                this.resetCart();
-                this.$router.replace({ name: 'citybeaches' });
-              }, 2000);
+              let i = this.cartLocal.detail.findIndex(item => {
+                return (
+                  item.cityID == r.cityID &&
+                  item.beachID == r.beachID &&
+                  item.sectorID == r.sectorID &&
+                  item.typeID == r.typeID
+                );
+              });
+
+              this.cartLocal.detail[i].quantity -= r.excess;
+
+              if (this.cartLocal.detail[i].quantity == 0) {
+                this.removeItem(i);
+              }
             }
-          });
+          } else {
+            this.postCart(this.cartLocal).then(result => {
+              if (result === true) {
+                setTimeout(() => {
+                  this.resetCart();
+                  this.$router.replace({ name: 'citybeaches' });
+                }, 2000);
+              }
+            });
+          }
         });
       });
     },

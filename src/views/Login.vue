@@ -21,7 +21,7 @@
       <div class="control">
         <b-taglist attached>
           <b-tag type="is-dark">version</b-tag>
-          <b-tag type="is-info">0.2.16</b-tag>
+          <b-tag type="is-info">0.2.17</b-tag>
         </b-taglist>
       </div>
     </form>
@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapMutations } from 'vuex';
 export default {
   name: 'login',
   data() {
@@ -46,6 +46,7 @@ export default {
   },
 
   mounted() {
+    this.setLogout();
     this.checkServer().then(result => {
       if (result) {
         this.offline = false;
@@ -55,6 +56,7 @@ export default {
 
   methods: {
     ...mapActions('userStore', ['getEmployee', 'checkServer']),
+    ...mapMutations('userStore', ['setLogout']),
 
     login() {
       this.getEmployee({

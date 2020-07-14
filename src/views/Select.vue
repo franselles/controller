@@ -70,7 +70,7 @@ export default {
     },
 
     logout() {
-      this.$router.replace({ name: 'login' });
+      this.$router.push({ name: 'login' });
     },
   },
 

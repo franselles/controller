@@ -93,17 +93,6 @@
     <b-field>
       <div class="buttons">
         <b-button
-          type="is-warning"
-          expanded
-          @click="sectorSelectedFull"
-          :disabled="buttonSelect"
-          >{{ sectorSelectedMsg }} FORMATO COMPLETO</b-button
-        >
-      </div>
-    </b-field>
-    <b-field>
-      <div class="buttons">
-        <b-button
           type="is-primary"
           expanded
           @click="sectorSelected"
@@ -202,21 +191,12 @@ export default {
       this.$router.push({ name: 'available' });
     },
 
-    sectorSelectedFull() {
-      this.setDateActual(dayjs(this.dateLocal).format('YYYY-MM-DD'));
-      this.setCityActual(this.cityLocal);
-      this.setBeachActual(this.beachLocal);
-      this.setSectorActual(this.sectorLocal);
-
-      this.$router.push({ name: 'sectorfull' });
-    },
-
     back() {
       this.$router.go(-1);
     },
 
     logout() {
-      this.$router.replace({ name: 'login' });
+      this.$router.push({ name: 'login' });
     },
   },
 
