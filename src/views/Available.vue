@@ -114,16 +114,6 @@ export default {
       this.updateRemoveCartDetail(data);
     },
 
-    generateUUID(s) {
-      let d = new Date().getTime();
-      const uuid = s.replace(/[xy]/g, function (c) {
-        const r = (d + Math.random() * 16) % 16 | 0;
-        d = Math.floor(d / 16);
-        return (c == 'x' ? r : (r & 0x3) | 0x8).toString(16);
-      });
-      return uuid;
-    },
-
     getTicketNumberLocal() {
       this.getTicketNumber().then(result => {
         // this.cartLocal.ticketID = (
@@ -185,7 +175,7 @@ export default {
           sector: this.sectorActual.sector,
           typeID: item.typeID,
           type: item.type,
-          itemID: item.typeID + this.generateUUID('xxxxx'),
+          itemID: null,
           price: item.price,
           quantity: item.quantity,
           codeID: null,
