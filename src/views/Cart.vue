@@ -207,7 +207,7 @@ export default {
           setTimeout(() => {
             this.resetCart();
             this.$router.replace({ name: 'citybeaches' });
-          }, 2000);
+          }, 1000);
         } else {
           if (result.data.length > 0) {
             for (const r of result.data) {

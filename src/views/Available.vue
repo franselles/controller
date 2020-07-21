@@ -73,6 +73,9 @@ export default {
         ticketID: null,
         canceled: false,
         payed: false,
+        lang: '',
+        payMethod: 1,
+        coupon: '',
         detail: [],
       },
     };
@@ -163,16 +166,19 @@ export default {
 
       this.cartLocal.canceled = false;
       this.cartLocal.payed = false;
+      this.cartLocal.lang = 'es';
+      this.cartLocal.payMethod = 1;
+      this.cartLocal.coupon = '';
 
       f.forEach(item => {
         this.cartLocal.detail.push({
           date: this.dateActual,
           cityID: this.cityActual.cityID,
-          city: this.cityActual.city,
+          // city: this.cityActual.city,
           beachID: this.beachActual.beachID,
-          beach: this.beachActual.beach,
+          // beach: this.beachActual.beach,
           sectorID: this.sectorActual.sectorID,
-          sector: this.sectorActual.sector,
+          // sector: this.sectorActual.sector,
           typeID: item.typeID,
           type: item.type,
           itemID: null,

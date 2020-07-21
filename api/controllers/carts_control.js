@@ -4,6 +4,7 @@ const dayjs = require('dayjs');
 
 const Carts = require('../models/carts_model');
 const { getCheckFilled } = require('./filled_control');
+const { getSectorFunction } = require('./sectors_control');
 
 function postUsed(req, res) {
   const id = req.body.id;
@@ -110,7 +111,17 @@ async function postCartCheck(req, res) {
       data.lang = req.body.lang;
       data.payMethod = req.body.payMethod;
       data.detail = req.body.detail;
-
+      data.coupon = req.body.coupon;
+      for (const iterator of data.detail) {
+        let sector = await getSectorFunction(
+          iterator.cityID,
+          iterator.beachID,
+          iterator.sectorID
+        );
+        iterator.city = sector.city;
+        iterator.beach = sector.beach;
+        iterator.sector = sector.sector;
+      }
       data.save((err, docStored) => {
         if (err)
           res.status(500).send({
