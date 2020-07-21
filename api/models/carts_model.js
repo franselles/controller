@@ -31,6 +31,9 @@ const cartsSchema = new Schema(
     canceled: { type: Boolean },
     payed: { type: Boolean },
     detail: [detailSchema],
+    lang: { type: String },
+    payMethod: { type: Number },
+    coupon: { type: String },
   },
   { collection: 'carts' }
 );

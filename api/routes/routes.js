@@ -13,7 +13,12 @@ const filledControl = require('../controllers/filled_control.js');
 const sectorsControl = require('../controllers/sectors_control.js');
 const cartsControl = require('../controllers/carts_control.js');
 const employeesControl = require('../controllers/employees_control');
+// const redsysControl = require('../controllers/redsys_control.js');
 // const usersControl = require('../controllers/users_control.js');
+
+// // Redsys
+// api.post('/make', redsysControl.getMakeParameters);
+// api.post('/successpost', redsysControl.paymentPost);
 
 // Cities
 api.get('/cities', citiesControl.getCities);
@@ -29,6 +34,7 @@ api.post('/cart', cartsControl.postCartCheck);
 api.post('/check', cartsControl.checkAvaiability);
 api.get('/carts', cartsControl.getCarts);
 api.get('/tickets', cartsControl.getTicketNumber);
+api.get('/ticket', cartsControl.getTicket);
 api.get('/detailday', cartsControl.getCartsDetail);
 
 // Users

@@ -78,6 +78,16 @@ async function checkAvaiability(req, res) {
   }
 }
 
+function generateUUID(s) {
+  let d = new Date().getTime();
+  const uuid = s.replace(/[xy]/g, function (c) {
+    const r = (d + Math.random() * 16) % 16 | 0;
+    d = Math.floor(d / 16);
+    return (c == 'x' ? r : (r & 0x3) | 0x8).toString(16);
+  });
+  return uuid;
+}
+
 async function postCartCheck(req, res) {
   try {
     const check = await checkAvaiabilityFunction(req.body);
@@ -93,22 +103,33 @@ async function postCartCheck(req, res) {
       data.date = req.body.date;
       data.userID = req.body.userID;
       data.phone = req.body.phone;
-      data.ticketID = ('00000000' + nt).slice(-8);
+      data.ticketID = generateUUID('xxx') + ('00000000' + nt).slice(-8);
       // data.ticketID = req.body.ticketID;
       data.canceled = req.body.canceled;
       data.payed = true;
+      data.lang = req.body.lang;
+      data.payMethod = req.body.payMethod;
       data.detail = req.body.detail;
 
-      data.save(err => {
+      data.save((err, docStored) => {
         if (err)
           res.status(500).send({
             message: `Error al salvar en la base de datos: ${err} `,
           });
 
-        res.status(200).send(true);
+        res.status(200).send({
+          success: true,
+          data: {
+            id: docStored.ticketID,
+          },
+        });
       });
     } else {
-      res.status(200).send(check);
+      res.status(200).send({
+        success: false,
+        code: 1,
+        data: check,
+      });
     }
   } catch (error) {
     return res.status(404).send(error);
@@ -389,6 +410,26 @@ function getTicketNumber(req, res) {
   });
 }
 
+function getTicket(req, res) {
+  const ticketID = req.query.id;
+
+  Carts.findOne({
+    ticketID: ticketID,
+    payed: true,
+  }).exec((err, doc) => {
+    if (err)
+      return res.status(500).send({
+        message: `Error al realizar la petición: ${err}`,
+      });
+    if (!doc)
+      return res.status(404).send({
+        message: 'No existe',
+      });
+
+    res.status(200).send(doc);
+  });
+}
+
 module.exports = {
   postCart,
   getCarts,
@@ -400,4 +441,5 @@ module.exports = {
   postUsed,
   checkAvaiability,
   postCartCheck,
+  getTicket,
 };
