@@ -19,42 +19,30 @@
     <p>{{ sectorActual.sector }} PLAYA {{ beachActual.beach }}</p>
 
     <div>
-      <table class="table">
-        <thead>
-          <tr>
-            <th><abbr title="#">#</abbr></th>
-            <th><abbr title="ID">ID</abbr></th>
-            <th><abbr title="ITEMS">ITEMS</abbr></th>
-            <th><abbr title="DISPONIBLE">DISPONIBLE</abbr></th>
-            <th><abbr title="CDAD">CDAD</abbr></th>
-            <th><abbr title="PRECIO">PRECIO</abbr></th>
-            <th><abbr title="TOTAL">TOTAL</abbr></th>
-            <th><abbr title="MAS">MAS</abbr></th>
-            <th><abbr title="MENOS">MENOS</abbr></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(item, index) in cartDetail" :key="index">
-            <th>{{ index + 1 }}</th>
-            <td>
-              {{ item.typeID }}
-            </td>
-            <td>
-              <strong>{{ item.type }}</strong>
-            </td>
-            <td>
-              {{ item.available }}
-            </td>
-            <td>{{ item.quantity }}</td>
-            <td>{{ item.price }}</td>
-            <td>{{ total(item) }}</td>
-            <td><b-button @click="addItem(index)">+</b-button></td>
-            <td><b-button @click="removeItem(index)">-</b-button></td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="card" v-for="(item, index) in cartDetail" :key="index">
+        <header class="card-header">
+          <p class="card-header-title">PRECIO TOTAL {{ total(item) }}</p>
+        </header>
+        <div class="card-content">
+          <div class="content">
+            ID: <strong> {{ item.typeID }}</strong>
+            <br />
+            <strong>{{ item.type }}</strong>
+            <br />
+            DISPONIBLE <strong> {{ item.available }}</strong>
+            <br />
+            CANTIDAD: <strong> {{ item.quantity }} </strong> PRECIO
+            <strong> {{ item.price }}</strong>
+          </div>
+        </div>
+        <footer class="card-footer">
+          <a class="card-footer-item" @click="addItem(index)">+</a>
+          <a class="card-footer-item" @click="removeItem(index)">-</a>
+        </footer>
+      </div>
     </div>
-    <b-button @click="send">ENVIAR</b-button>
+
+    <b-button type="is-primary" @click="send">ENVIAR</b-button>
   </div>
 </template>
 
@@ -217,4 +205,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.card {
+  margin: 1.2em 0 1.2em;
+}
+</style>

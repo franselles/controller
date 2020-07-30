@@ -39,10 +39,12 @@ function getSectorFunction(cityID, beachID, sectorID) {
 
 function getSector(req, res) {
   const cityID = req.query.cityID;
+  const beachID = req.query.beachID;
   const sectorID = req.query.sectorID;
 
   Sectors.find({
     cityID: cityID,
+    beachID: beachID,
     sectorID: sectorID,
   }).exec((err, doc) => {
     if (err)

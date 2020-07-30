@@ -172,67 +172,6 @@ async function postCart(req, res) {
   }
 }
 
-function getStock(cart) {
-  let exists = [];
-
-  try {
-    return new Promise(function (resolve) {
-      cart.detail.forEach((element, index) => {
-        Carts.aggregate([
-          {
-            $match: {
-              payed: true,
-            },
-          },
-          { $unwind: '$detail' },
-          {
-            $match: {
-              'detail.cityID': Number(element.cityID),
-              'detail.beachID': Number(element.beachID),
-              'detail.sectorID': Number(element.sectorID),
-              'detail.typeID': Number(element.typeID),
-              'detail.date': element.date,
-              'detail.row': element.row,
-              'detail.col': element.col,
-            },
-          },
-          {
-            $project: {
-              date: '$detail.date',
-              cityID: '$detail.cityID',
-              city: '$detail.city',
-              beachID: '$detail.beachID',
-              beach: '$detail.beach',
-              sectorID: '$detail.sectorID',
-              sector: '$detail.sector',
-              typeID: '$detail.typeID',
-              type: '$detail.type',
-              itemID: '$detail.itemID',
-              col: '$detail.col',
-              row: '$detail.row',
-              price: '$detail.price',
-              used: '$detail.used',
-              dateTimeUsed: '$detail.dateTimeUsed',
-              numberItem: '$detail.numberItem',
-            },
-          },
-        ]).exec((err, doc) => {
-          if (err) return { error: 500 };
-          if (doc.length > 0) {
-            exists.push(doc[0]);
-          }
-
-          if (index == cart.detail.length - 1) {
-            resolve(exists);
-          }
-        });
-      });
-    });
-  } catch (error) {
-    console.log(error);
-  }
-}
-
 function getCarts(req, res) {
   const userID = req.query.userID;
 
@@ -266,10 +205,10 @@ function getCartsDetail(req, res) {
     {
       $match: {
         userID: userID,
-        'detail.date': { $gte: date },
+        'detail.date': date,
       },
     },
-    { $sort: { 'detail.date': 1, col: 1, row: 1 } },
+    { $sort: { 'detail.typeID': 1 } },
     {
       $project: {
         date: '$detail.date',
@@ -282,8 +221,62 @@ function getCartsDetail(req, res) {
         typeID: '$detail.typeID',
         type: '$detail.type',
         itemID: '$detail.itemID',
-        col: '$detail.col',
-        row: '$detail.row',
+        quantity: '$detail.quantity',
+        price: '$detail.price',
+        used: '$detail.used',
+        dateTimeUsed: '$detail.dateTimeUsed',
+        numberItem: '$detail.numberItem',
+      },
+    },
+  ]).exec((err, doc) => {
+    if (err)
+      return res.status(500).send({
+        message: `Error al realizar la petición: ${err}`,
+      });
+    if (!doc)
+      return res.status(404).send({
+        message: 'No existe',
+      });
+
+    res.status(200).send(doc);
+  });
+}
+
+function getCartsDetailDayAll(req, res) {
+  const cityID = req.query.cityID;
+  const beachID = req.query.beachID;
+  const sectorID = req.query.sectorID;
+  const date = req.query.date;
+
+  Carts.aggregate([
+    {
+      $match: {
+        payed: true,
+      },
+    },
+    { $unwind: '$detail' },
+    {
+      $match: {
+        cityID: cityID,
+        beachID: beachID,
+        sectorID: sectorID,
+        'detail.date': date,
+      },
+    },
+    { $sort: { 'detail.typeID': 1 } },
+    {
+      $project: {
+        date: '$detail.date',
+        cityID: '$detail.cityID',
+        city: '$detail.city',
+        beachID: '$detail.beachID',
+        beach: '$detail.beach',
+        sectorID: '$detail.sectorID',
+        sector: '$detail.sector',
+        typeID: '$detail.typeID',
+        type: '$detail.type',
+        itemID: '$detail.itemID',
+        quantity: '$detail.quantity',
         price: '$detail.price',
         used: '$detail.used',
         dateTimeUsed: '$detail.dateTimeUsed',
@@ -340,7 +333,6 @@ function getItemUserDetail(req, res) {
         'detail._id': ObjectId(id),
       },
     },
-    { $sort: { 'detail.date': 1, col: 1, row: 1 } },
     {
       $project: {
         _id: '$detail._id',
@@ -354,8 +346,7 @@ function getItemUserDetail(req, res) {
         typeID: '$detail.typeID',
         type: '$detail.type',
         itemID: '$detail.itemID',
-        col: '$detail.col',
-        row: '$detail.row',
+        quantity: '$detail.quantity',
         price: '$detail.price',
         used: '$detail.used',
         dateTimeUsed: '$detail.dateTimeUsed',
@@ -446,11 +437,11 @@ module.exports = {
   getCarts,
   getTicketNumber,
   getCartsDetail,
-  getStock,
   getItemUserDetail,
   getItemUser,
   postUsed,
   checkAvaiability,
   postCartCheck,
   getTicket,
+  getCartsDetailDayAll,
 };

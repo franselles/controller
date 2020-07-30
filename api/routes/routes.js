@@ -36,6 +36,7 @@ api.get('/carts', cartsControl.getCarts);
 api.get('/tickets', cartsControl.getTicketNumber);
 api.get('/ticket', cartsControl.getTicket);
 api.get('/detailday', cartsControl.getCartsDetail);
+api.get('/detaildayall', cartsControl.getCartsDetailDayAll);
 
 // Users
 api.get('/user/email', usersControl.checkEmail);
