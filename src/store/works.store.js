@@ -239,7 +239,6 @@ export default {
           commit('setBeaches', data.data);
           return data.data;
         }
-        console.log(data);
       } catch (error) {
         console.log(error);
       }
@@ -260,6 +259,27 @@ export default {
         });
         if (data.data) {
           // await commit('setStateSector', data.data);
+          return data.data;
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+    async getCategories(context, payload) {
+      try {
+        const data = await Vue.axios({
+          method: 'get',
+          url: 'categories',
+          params: {
+            cityID: payload.cityID,
+            beachID: payload.beachID,
+            sectorID: payload.sectorID,
+            date: payload.date,
+          },
+        });
+
+        if (data.data) {
           return data.data;
         }
       } catch (error) {

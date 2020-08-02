@@ -62,7 +62,7 @@ export default {
     },
 
     booked() {
-      // this.$router.push({ name: 'checkticket' });
+      this.$router.push({ name: 'today' });
     },
 
     back() {

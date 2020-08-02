@@ -1,6 +1,6 @@
 {
   "name": "controlplayas_2020",
-  "version": "0.2.24",
+  "version": "0.2.25",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -14,15 +14,15 @@
     "body-parser": "^1.19.0",
     "buefy": "^0.8.20",
     "core-js": "^3.6.4",
-    "dayjs": "^1.8.29",
+    "dayjs": "^1.8.31",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "helmet": "^3.23.3",
-    "mongoose": "^5.9.25",
+    "mongoose": "^5.9.27",
     "register-service-worker": "^1.7.1",
     "vue": "^2.6.11",
     "vue-axios": "^2.1.5",
-    "vue-qrcode-reader": "^2.3.10",
+    "vue-qrcode-reader": "^2.3.11",
     "vue-router": "^3.3.4",
     "vuex": "^3.5.1"
   },

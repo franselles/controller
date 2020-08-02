@@ -51,4 +51,10 @@ export default [
     component: () => import('@/views/Checkticket.vue'),
     meta: { requiresAuth: true },
   },
+  {
+    path: '/today',
+    name: 'today',
+    component: () => import('@/views/Today.vue'),
+    meta: { requiresAuth: true },
+  },
 ];
