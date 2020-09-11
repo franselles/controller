@@ -1,4 +1,4 @@
-# bookbed
+# controller
 
 ## Project setup
 ```
